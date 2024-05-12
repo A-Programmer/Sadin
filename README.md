@@ -1,0 +1,1 @@
+dotnet ef --startup-project src/Sadin.Api/Sadin.Api.csproj migrations add "Init" -p src/Sadin.Infrastructure/Sadin.Infrastructure.csproj

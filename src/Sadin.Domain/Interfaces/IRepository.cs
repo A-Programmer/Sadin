@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Sadin.Common.Interfaces;
 using Sadin.Common.Utilities;
 
 namespace Sadin.Domain.Interfaces;
