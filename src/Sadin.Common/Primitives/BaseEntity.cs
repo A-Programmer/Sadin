@@ -1,13 +1,9 @@
-using Sadin.Common.Interfaces;
 
 namespace Sadin.Common.Primitives;
 
-public abstract class BaseEntity<TKey> : IEntity
+public abstract class BaseEntity<TKey>
 {
-    protected BaseEntity(TKey id)
-    {
-        Id = id;
-    }
+    protected BaseEntity(TKey id) => Id = id;
     public TKey Id { get; init; }
 
     protected BaseEntity()

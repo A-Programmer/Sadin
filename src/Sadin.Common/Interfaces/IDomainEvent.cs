@@ -1,5 +1,3 @@
-using MediatR;
-
 namespace Sadin.Common.Interfaces;
 
 public interface IDomainEvent : INotification
