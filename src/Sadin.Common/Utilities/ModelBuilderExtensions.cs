@@ -8,10 +8,10 @@ namespace Sadin.Common.Utilities;
 public static class ModelBuilderExtensions
 {
     /// <summary>
-    /// Singularizing table names like Posts to Post or People to Person
+    /// Singular table names like Posts to Post or People to Person
     /// </summary>
     /// <param name="modelBuilder"></param>
-    public static void AddSingularizingTableNamesConvention(this ModelBuilder modelBuilder)
+    public static void AddSingularTableNamesConvention(this ModelBuilder modelBuilder)
     {
         Pluralizer pluralizer = new Pluralizer();
         foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
@@ -39,7 +39,6 @@ public static class ModelBuilderExtensions
     /// Set NEWSEQUENTIALID() sql function for all columns named "Id"
     /// </summary>
     /// <param name="modelBuilder"></param>
-    /// <param name="mustBeIdentity">Set to true if you want only "Identity" guid fields that named "Id"</param>
     public static void AddSequentialGuidForIdConvention(this ModelBuilder modelBuilder)
     {
         modelBuilder.AddDefaultValueSqlConvention("Id", typeof(Guid), "NEWSEQUENTIALID()");
@@ -76,7 +75,7 @@ public static class ModelBuilderExtensions
     }
 
     /// <summary>
-    /// Dynamicaly load all IEntityTypeConfiguration with Reflection
+    /// Dynamically load all IEntityTypeConfiguration with Reflection
     /// </summary>
     /// <param name="modelBuilder"></param>
     /// <param name="assemblies">Assemblies contains Entities</param>
@@ -101,15 +100,15 @@ public static class ModelBuilderExtensions
     }
 
     /// <summary>
-    /// Dynamicaly register all Entities that inherit from specific BaseType
+    /// Dynamically register all Entities that inherit from specific BaseType
     /// </summary>
+    /// <typeparam name="TBaseType"></typeparam>
     /// <param name="modelBuilder"></param>
-    /// <param name="baseType">Base type that Entities inherit from this</param>
     /// <param name="assemblies">Assemblies contains Entities</param>
-    public static void RegisterAllEntities<BaseType>(this ModelBuilder modelBuilder, params Assembly[] assemblies)
+    public static void RegisterAllEntities<TBaseType>(this ModelBuilder modelBuilder, params Assembly[] assemblies)
     {
         IEnumerable<Type> types = assemblies.SelectMany(a => a.GetExportedTypes())
-            .Where(c => c.IsClass && !c.IsAbstract && c.IsPublic && typeof(BaseType).IsAssignableFrom(c));
+            .Where(c => c.IsClass && !c.IsAbstract && c.IsPublic && typeof(TBaseType).IsAssignableFrom(c));
 
         foreach (Type type in types)
             modelBuilder.Entity(type);
