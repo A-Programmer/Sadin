@@ -6,7 +6,7 @@ namespace Sadin.Infrastructure.Repositories;
 
 public class RolesRepository : Repository<Role>, IRolesRepository
 {
-    public RolesRepository(DbContext context) : base(context)
+    public RolesRepository(ApplicationDbContext context) : base(context)
     {
     }
     

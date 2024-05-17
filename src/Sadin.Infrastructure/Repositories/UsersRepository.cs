@@ -6,7 +6,7 @@ namespace Sadin.Infrastructure.Repositories;
 
 public sealed class UsersRepository : Repository<User>, IUsersRepository
 {
-    public UsersRepository(DbContext context) : base(context)
+    public UsersRepository(ApplicationDbContext context) : base(context)
     {
     }
 

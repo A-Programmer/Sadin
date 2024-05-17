@@ -8,9 +8,9 @@ namespace Sadin.Infrastructure.Data;
 
 public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IAggregateRoot
 {
-    protected readonly DbContext Context;
+    protected readonly ApplicationDbContext Context;
     protected DbSet<TEntity> Entity;
-    public Repository(DbContext context)
+    protected Repository(ApplicationDbContext context)
     {
         this.Context = context;
         Entity = Context.Set<TEntity>();

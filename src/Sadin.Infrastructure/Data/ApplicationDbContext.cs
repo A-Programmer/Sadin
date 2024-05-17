@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Sadin.Common.Interfaces;
 using Sadin.Common.Primitives;
 using Sadin.Common.Utilities;
 
