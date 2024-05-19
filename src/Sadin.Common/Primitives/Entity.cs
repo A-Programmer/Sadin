@@ -1,4 +1,4 @@
-namespace Sadin.Domain;
+namespace Sadin.Common.Primitives;
 
 public abstract class Entity : BaseEntity<Guid>, IEquatable<Entity>
 {

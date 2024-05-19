@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sadin.Common.Primitives;
 using Sadin.Common.Utilities;
+using Sadin.Infrastructure.Outbox;
 
 namespace Sadin.Infrastructure.Data;
 
@@ -12,6 +13,8 @@ public class ApplicationDbContext : DbContext
         
     }
 
+    public DbSet<OutboxMessage> OutboxMessages { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -21,6 +24,8 @@ public class ApplicationDbContext : DbContext
         #region Register All Entities
         modelBuilder.RegisterAllEntities<BaseEntity>(entitiesAssembly);
         #endregion
+        
+        // TODO: Fix this by using modelBuilder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
 
         #region Apply Entities Configuration
         modelBuilder.RegisterEntityTypeConfiguration(entitiesAssembly);

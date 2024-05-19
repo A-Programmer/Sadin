@@ -1,18 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Project.Common.Utilities;
+using Sadin.Common.Abstractions;
 using Sadin.Common.CustomExceptions;
 using Sadin.Common.Utilities;
 using Sadin.Domain.Aggregates.Roles;
+using Sadin.Domain.Aggregates.Users.Events;
 
 namespace Sadin.Domain.Aggregates.Users;
 
-public sealed class User : BaseEntity, IAggregateRoot
+public sealed class User : AggregateRoot
 {
-    public User(string userName,
+    private User(Guid id,
+        string userName,
         string hashedPassword,
         string email,
-        string phoneNumber)
+        string phoneNumber) : base(id)
     {
         if (!userName.HasValue())
             throw new ArgumentNullException(nameof(userName));
@@ -35,10 +38,10 @@ public sealed class User : BaseEntity, IAggregateRoot
         PhoneNumber = phoneNumber;
     }
     
-    public string UserName { get; set; }
-    public string HashedPassword { get; set; }
-    public string Email { get; set; }
-    public string PhoneNumber { get; set; }
+    public string UserName { get; private set; }
+    public string HashedPassword { get; private set; }
+    public string Email { get; private set; }
+    public string PhoneNumber { get; private set; }
     private List<Role> _roles = new();
     public IReadOnlyCollection<Role> Roles => _roles;
 
@@ -70,6 +73,19 @@ public sealed class User : BaseEntity, IAggregateRoot
 
     public void UnAssignRoles(IEnumerable<Role> roles) =>
         _roles.RemoveAll(role => _roles.Contains(role));
+    
+    public static User Create(Guid id,
+        string userName,
+        string hashedPassword,
+        string email,
+        string phoneNumber)
+    {
+        User user = new(id, userName, hashedPassword, email, phoneNumber);
+        
+        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
+
+        return user;
+    }
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>

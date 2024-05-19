@@ -1,14 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Sadin.Common.Abstractions;
 using Sadin.Common.Utilities;
 using Sadin.Domain.Aggregates.Users;
 
 namespace Sadin.Domain.Aggregates.Roles;
 
-public sealed class Role : BaseEntity, IAggregateRoot
+public sealed class Role : AggregateRoot
 {
-    public Role(string name,
-        string? description)
+    private Role(Guid id,
+        string name,
+        string? description) : base(id)
     {
         if (!name.HasValue())
             throw new ArgumentNullException(nameof(name));
@@ -18,8 +20,8 @@ public sealed class Role : BaseEntity, IAggregateRoot
             Description = description;
     }
     
-    public string Name { get; set; }
-    public string? Description { get; set; } = string.Empty;
+    public string Name { get; private set; }
+    public string? Description { get; private set; } = string.Empty;
 
     private List<User> _users = new();
     public IReadOnlyCollection<User> Users => _users;
@@ -35,16 +37,13 @@ public sealed class Role : BaseEntity, IAggregateRoot
             Description = description;
     }
 
-    public void AddUserToRole(User user)
+    public static Role Create(Guid id,
+        string name,
+        string description)
     {
-        if (!_users.Contains(user))
-            _users.Add(user);
-    }
+        Role role = new(id, name, description);
 
-    public void RemoveUserFromRole(User user)
-    {
-        if (_users.Contains(user))
-            _users.Remove(user);
+        return role;
     }
 }
 
@@ -58,8 +57,8 @@ public class UserConfiguration : IEntityTypeConfiguration<Role>
 
         builder.HasData(new List<Role>()
         {
-            new("Admin", "Admin Group"),
-            new("User", "Users Group")
+            Role.Create(Guid.NewGuid(),"Admin", "Admin Group"),
+            Role.Create(Guid.NewGuid(),"User", "Users Group")
         });
     }
 }

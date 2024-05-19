@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Sadin.Common.Interfaces;
+using Sadin.Common.Abstractions;
 using Sadin.Common.Utilities;
 using Sadin.Domain.Interfaces;
 
@@ -54,7 +54,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         return PaginatedList<TEntity>.Create(Entity.AsQueryable(), pageIndex, pageSize, where, orderBy, desc);
     }
 
-    public virtual async ValueTask<TEntity> GetByIdAsync(object id,
+    public virtual async ValueTask<TEntity?> GetByIdAsync(object id,
         CancellationToken cancellationToken = default)
     {
         return await Entity.FindAsync(new[] { id }, cancellationToken);
@@ -70,7 +70,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity :
         Entity.RemoveRange(entities);
     }
 
-    public virtual async Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate,
+    public virtual async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default)
     {
         return await Entity.SingleOrDefaultAsync(predicate, cancellationToken);
