@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Sadin.Presentation.Controllers;
 
-[Authorize(Roles = "admin")]
+[Authorize]
 public class TestController : BaseController
 {
     public TestController(ISender sender) : base(sender)

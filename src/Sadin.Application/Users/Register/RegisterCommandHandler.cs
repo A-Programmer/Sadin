@@ -22,7 +22,7 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Gu
     {
         string hashedPassword = SecurityHelper.GetSha256Hash(request.Password);
         
-        User user = new(request.UserName, hashedPassword, request.Email, request.PhoneNumber);
+        User user = User.Create(Guid.NewGuid(), request.UserName, hashedPassword, request.Email, request.PhoneNumber);
             
         Role? role = await _uow.Roles.GetByRoleName("User", cancellationToken);
         if (role == null)
