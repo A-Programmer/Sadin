@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Sadin.Presentation.Constants;
 
-namespace Sadin.Presentagtion.Controllers;
+namespace Sadin.Presentation.Controllers;
 
 [ApiController]
 [Route(Routes.Root)]
