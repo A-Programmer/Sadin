@@ -5,19 +5,26 @@ using Sadin.Domain;
 using Sadin.Infrastructure;
 using Sadin.Presentation;
 
+PublicSettings _settings = new();
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+IConfiguration Configuration = builder.Environment.IsProduction()
+    ? new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json")
+        .Build()
+    : new ConfigurationBuilder()
+        .AddJsonFile("appsettings.Development.json")
+        .Build();
 
-builder.Services.RegisterCommon();
-builder.Services.RegisterDomain();
+Configuration.GetSection(nameof(PublicSettings)).Bind(_settings);
+
+builder.Services.RegisterApi(Configuration);
+builder.Services.RegisterPresentation(_settings);
+builder.Services.RegisterInfrastructure(Configuration);
 builder.Services.RegisterApplication();
-builder.Services.RegisterInfrastructure();
-builder.Services.RegisterPresentation();
-builder.Services.RegisterApi();
-
+builder.Services.RegisterDomain();
+builder.Services.RegisterCommon();
 
 var app = builder.Build();
 
@@ -33,8 +40,6 @@ app.UseApplication();
 app.UseInfrastructure();
 app.UsePresentation();
 app.UseApi();
-
-app.UseHttpsRedirection();
 
 
 app.Run();

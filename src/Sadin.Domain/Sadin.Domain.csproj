@@ -10,8 +10,4 @@
     <ProjectReference Include="..\Sadin.Common\Sadin.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Aggregates\" />
-  </ItemGroup>
-
 </Project>

@@ -1,12 +1,12 @@
 using System.Linq.Expressions;
-using Sadin.Common.Interfaces;
+using Sadin.Common.Abstractions;
 using Sadin.Common.Utilities;
 
 namespace Sadin.Domain.Interfaces;
 
 public interface IRepository<TEntity> where TEntity : class, IAggregateRoot
 {
-    ValueTask<TEntity> GetByIdAsync(object id,
+    ValueTask<TEntity?> GetByIdAsync(object id,
         CancellationToken cancellationToken = default);
     
     Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
@@ -25,7 +25,7 @@ public interface IRepository<TEntity> where TEntity : class, IAggregateRoot
     
     IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
     
-    Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate,
+    Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate,
         CancellationToken cancellationToken = default);
     
     Task AddAsync(TEntity entity,
