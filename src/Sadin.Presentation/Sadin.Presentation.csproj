@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Sadin.Common\Sadin.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\BaseControllers\" />
-  </ItemGroup>
-
 </Project>
