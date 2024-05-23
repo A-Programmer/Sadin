@@ -1,19 +1,15 @@
 using System.Security.Claims;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Sadin.Presentation.Constants;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Sadin.Presentation.Controllers;
+namespace Sadin.Presentation.Controllers.BaseControllers;
 
-[ApiController]
-[Route(Routes.Root)]
-public class BaseController : ControllerBase
+[Authorize]
+public abstract class SecureBaseController : BaseController
 {
-    protected readonly ISender Sender;
-    
-    public BaseController(ISender sender)
+    protected SecureBaseController(ISender sender)
+        : base(sender)
     {
-        Sender = sender;
     }
     
     protected string UserId => User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
@@ -36,5 +32,4 @@ public class BaseController : ControllerBase
     {
         return Request.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString()!;
     }
-
 }
