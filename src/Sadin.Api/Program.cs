@@ -1,23 +1,16 @@
 using Sadin.Api;
+using Sadin.Api.ExtensionMethods;
 using Sadin.Application;
 using Sadin.Common;
 using Sadin.Domain;
 using Sadin.Infrastructure;
 using Sadin.Presentation;
 
-PublicSettings _settings = new();
+var mainBuilder = WebApplication.CreateBuilder(args);
 
-var builder = WebApplication.CreateBuilder(args);
-
-IConfiguration Configuration = builder.Environment.IsProduction()
-    ? new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json")
-        .Build()
-    : new ConfigurationBuilder()
-        .AddJsonFile("appsettings.Development.json")
-        .Build();
-
-Configuration.GetSection(nameof(PublicSettings)).Bind(_settings);
+(WebApplicationBuilder builder,
+    IConfiguration Configuration,
+    PublicSettings _settings) = mainBuilder.AddBasicConfigurations();
 
 builder.Services.RegisterApi(Configuration);
 builder.Services.RegisterPresentation(_settings);
