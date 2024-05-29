@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sadin.Application.Users.CheckUserExistence;
 using Sadin.Application.Users.Login;
 using Sadin.Common.CustomExceptions;
+using Sadin.Presentation.Controllers.BaseControllers;
 
 namespace Sadin.Presentation.Controllers;
 
