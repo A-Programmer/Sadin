@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Sadin.Common;
 using Sadin.Presentation.ExtensionMethods;
+using Sadin.Presentation.Handlers;
 
 namespace Sadin.Presentation;
 
@@ -10,6 +10,7 @@ public static class DependencyInjection
     public static IServiceCollection RegisterPresentation(this IServiceCollection services,
         PublicSettings settings)
     {
+        services.AddGlobalExceptionHandling();
         services.AddCustomControllers();
         services.AddCustomSwagger();
         services.AddCustomAuthentication(settings.JwtOptions);
@@ -19,6 +20,9 @@ public static class DependencyInjection
 
     public static WebApplication UsePresentation(this WebApplication app)
     {
+        app.UseStatusCodePages();
+        app.UseExceptionHandler();
+        
         app.UseSwagger();
         app.UseSwaggerUI();
         
