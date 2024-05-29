@@ -1,24 +1,10 @@
 using System.Reflection;
-using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace Sadin.Presentation.ExtensionMethods;
 
-public static class DependencyInjectionExtensionMethods
+public static class AddCustomSwaggerExtensionMethod
 {
-    public static IServiceCollection AddCustomControllers(this IServiceCollection services)
-    {
-        services.AddControllers()
-            .AddApplicationPart(Application.AssemblyReference.Assembly)
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-            });
-
-        return services;
-    }
-
     public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
