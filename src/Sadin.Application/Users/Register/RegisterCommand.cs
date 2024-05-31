@@ -1,5 +1,3 @@
-using Sadin.Common.MediatRCommon.Commands;
-
 namespace Sadin.Application.Users.Register;
 
 public sealed record RegisterCommand(string UserName,

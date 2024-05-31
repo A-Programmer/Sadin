@@ -22,9 +22,8 @@ public static class DependencyInjection
     {
         app.UseStatusCodePages();
         app.UseExceptionHandler();
-        
-        app.UseSwagger();
-        app.UseSwaggerUI();
+
+        app.UseCustomSwagger();
         
         app.UseHttpsRedirection();
         
