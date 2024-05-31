@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
 
 namespace Sadin.Presentation.ExtensionMethods;
@@ -47,5 +48,13 @@ public static class AddCustomSwaggerExtensionMethod
         });
 
         return services;
+    }
+
+    public static WebApplication UseCustomSwagger(this WebApplication app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+        return app;
     }
 }

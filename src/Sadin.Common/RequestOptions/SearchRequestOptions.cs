@@ -1,6 +1,8 @@
+
 namespace Sadin.Common.RequestOptions;
 
-public class SearchRequestOptions : OrderingRequestOptions
+public class SearchRequestOptions
+    : OrderingRequestOptions
 {
-    public string? SearchTerm { get; set; } = "";
+    public string SearchTerm { get; set; } = string.Empty;
 }
