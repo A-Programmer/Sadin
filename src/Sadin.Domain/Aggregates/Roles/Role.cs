@@ -10,7 +10,7 @@ public sealed class Role : AggregateRoot
 {
     private Role(Guid id,
         string name,
-        string? description) : base(id)
+        string description) : base(id)
     {
         if (!name.HasValue())
             throw new ArgumentNullException(nameof(name));
@@ -21,13 +21,13 @@ public sealed class Role : AggregateRoot
     }
     
     public string Name { get; private set; }
-    public string? Description { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
 
     private List<User> _users = new();
     public IReadOnlyCollection<User> Users => _users;
 
     public void Update(string name,
-        string? description)
+        string description)
     {
         if (!name.HasValue())
             throw new ArgumentNullException(nameof(name));

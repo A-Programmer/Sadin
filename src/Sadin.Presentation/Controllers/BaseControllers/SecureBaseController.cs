@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Sadin.Presentation.Controllers.BaseControllers;

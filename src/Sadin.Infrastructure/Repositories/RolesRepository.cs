@@ -17,4 +17,13 @@ public class RolesRepository : Repository<Role>, IRolesRepository
             .FirstOrDefaultAsync(x => x.Name.ToLower() == roleName,
                 cancellationToken);
     }
+
+    public async Task<Role?> GetRoleByIdIncludingUsersAsync(Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        return await Entity
+            .Include(r => r.Users)
+            .FirstOrDefaultAsync(r => r.Id == id,
+                cancellationToken);
+    }
 }

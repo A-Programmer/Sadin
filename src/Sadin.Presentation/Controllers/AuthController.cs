@@ -1,5 +1,3 @@
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Sadin.Application.Users.CheckUserExistence;
 using Sadin.Application.Users.Login;
 using Sadin.Common.CustomExceptions;
@@ -14,6 +12,10 @@ public class AuthController : BaseController
     }
     
     [HttpPost]
+    [Produces(typeof(string))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> PostAsync([FromBody] LoginRequest request,
         CancellationToken cancellationToken = default)
     {

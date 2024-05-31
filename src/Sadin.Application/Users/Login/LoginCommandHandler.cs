@@ -1,6 +1,5 @@
 using System.Security.Authentication;
 using Sadin.Common.CustomExceptions;
-using Sadin.Common.MediatRCommon.Commands;
 using Sadin.Common.Utilities;
 
 namespace Sadin.Application.Users.Login;

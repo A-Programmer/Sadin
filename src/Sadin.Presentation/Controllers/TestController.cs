@@ -1,6 +1,4 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Sadin.Presentation.Controllers.BaseControllers;
 
 namespace Sadin.Presentation.Controllers;
