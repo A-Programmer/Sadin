@@ -21,17 +21,11 @@ builder.Services.RegisterCommon();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.UsePresentation();
 app.UseCommon();
 app.UseDomain();
 app.UseApplication();
 app.UseInfrastructure();
-app.UsePresentation();
 app.UseApi();
 
 

@@ -20,10 +20,10 @@ public static class DependencyInjection
 
     public static WebApplication UsePresentation(this WebApplication app)
     {
+        app.UseCustomSwagger();
+     
         app.UseStatusCodePages();
         app.UseExceptionHandler();
-
-        app.UseCustomSwagger();
         
         app.UseHttpsRedirection();
         

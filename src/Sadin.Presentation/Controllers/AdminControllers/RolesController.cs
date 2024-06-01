@@ -10,12 +10,13 @@ namespace Sadin.Presentation.Controllers.AdminControllers;
 
 [Authorize(Roles = "admin")]
 [Produces("application/json")]
+[ApiExplorerSettings(GroupName = SwaggerGroupLabels.Admin)]
 public sealed class RolesController(ISender sender)  : SecureBaseController(sender)
 {
     [HttpGet]
-    [Produces(typeof(PaginatedList<RolesListItemResponse>))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Produces("application/json")]
     public async Task<ActionResult<PaginatedList<RolesListItemResponse>>> GetAsync(
         [FromQuery] SearchRequestOptions options,
         CancellationToken cancellationToken = default)
