@@ -5,6 +5,7 @@ using Sadin.Presentation.Controllers.BaseControllers;
 
 namespace Sadin.Presentation.Controllers;
 
+[ApiExplorerSettings(GroupName = SwaggerGroupLabels.General)]
 public class RegistrationController : BaseController
 {
     public RegistrationController(ISender sender) : base(sender)

@@ -6,3 +6,4 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.DependencyInjection;
 global using Sadin.Common.RequestOptions;
 global using Sadin.Common.Utilities;
+global using Sadin.Presentation.Constants;

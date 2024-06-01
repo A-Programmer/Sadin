@@ -2,7 +2,7 @@ namespace Sadin.Presentation.Constants;
 
 public static class Routes
 {
-    public const string Root = "api/v1/[controller]";
+    public const string Root = "api/[controller]";
     
     public static class Registration
     {

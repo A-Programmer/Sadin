@@ -1,5 +1,3 @@
-using Sadin.Presentation.Constants;
-
 namespace Sadin.Presentation.Controllers.BaseControllers;
 
 [ApiController]
