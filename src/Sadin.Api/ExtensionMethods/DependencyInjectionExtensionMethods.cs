@@ -23,5 +23,8 @@ public static class DependencyInjectionExtensionMethods
         return (builder, Configuration, _settings);
     }
     
-    
+    public static WebApplication RegisterGeneralPipelines(this WebApplication app)
+    {
+        return app;
+    }
 }
