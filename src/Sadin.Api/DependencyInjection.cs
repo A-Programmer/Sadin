@@ -1,20 +1,24 @@
+using Sadin.Api.ExtensionMethods;
 using Sadin.Common;
 
 namespace Sadin.Api;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection RegisterApi(this IServiceCollection services,
+    public static WebApplicationBuilder RegisterApi(this WebApplicationBuilder builder,
         IConfiguration configuration)
     {
-        services.Configure<PublicSettings>(
+        builder.Services.Configure<PublicSettings>(
             configuration.GetSection(nameof(PublicSettings)));
         
-        return services;
+        builder.AddSerilog();
+        
+        return builder;
     }
 
     public static WebApplication UseApi(this WebApplication app)
     {
+        app.RegisterGeneralPipelines();
         return app;
     }
 }

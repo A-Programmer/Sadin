@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Sadin.Application.Users.CheckUserExistence;
 using Sadin.Application.Users.Login;
 using Sadin.Common.CustomExceptions;
