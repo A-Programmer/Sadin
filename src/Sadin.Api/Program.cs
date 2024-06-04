@@ -12,9 +12,9 @@ var mainBuilder = WebApplication.CreateBuilder(args);
     IConfiguration Configuration,
     PublicSettings _settings) = mainBuilder.AddBasicConfigurations();
 
-builder.RegisterApi(Configuration);
+builder.RegisterApi(builder.Configuration);
 builder.Services.RegisterPresentation(_settings);
-builder.Services.RegisterInfrastructure(Configuration);
+builder.Services.RegisterInfrastructure(builder.Configuration);
 builder.Services.RegisterApplication();
 builder.Services.RegisterDomain();
 builder.Services.RegisterCommon();

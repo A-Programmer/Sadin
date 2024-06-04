@@ -10,13 +10,7 @@ public static class DependencyInjectionExtensionMethods
     {
         PublicSettings _settings = new();
 
-        IConfiguration Configuration = builder.Environment.IsProduction()
-            ? new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build()
-            : new ConfigurationBuilder()
-                .AddJsonFile("appsettings.Development.json")
-                .Build();
+        IConfiguration Configuration = new ConfigurationBuilder().Build();
 
         Configuration.GetSection(nameof(PublicSettings)).Bind(_settings);
         
