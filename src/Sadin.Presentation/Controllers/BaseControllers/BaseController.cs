@@ -2,6 +2,7 @@ namespace Sadin.Presentation.Controllers.BaseControllers;
 
 [ApiController]
 [Route(Routes.Root)]
+[Produces("application/json")]
 public abstract class BaseController : ControllerBase
 {
     protected readonly ISender Sender;

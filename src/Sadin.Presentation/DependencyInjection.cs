@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Sadin.Common;
 using Sadin.Presentation.ExtensionMethods;
-using Sadin.Presentation.Handlers;
 
 namespace Sadin.Presentation;
 

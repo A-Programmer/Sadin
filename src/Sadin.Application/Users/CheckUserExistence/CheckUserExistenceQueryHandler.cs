@@ -12,11 +12,11 @@ public sealed class CheckUserExistenceQueryHandler : IQueryHandler<CheckUserExis
         bool userByEmail = false;
         bool userByPhoneNumber = false;
 
-        User? user = await _uow.Users.FindUserByUserName(request.UserName, cancellationToken);
+        User? user = await _uow.Users.FindUserByUserNameAsync(request.UserName, cancellationToken);
         if (user is not null)
             return user.Id;
          
-        user = await _uow.Users.FindUserByEmail(request.UserName, cancellationToken);
+        user = await _uow.Users.FindUserByEmailAsync(request.UserName, cancellationToken);
         if (user is not null)
             return user.Id;
         

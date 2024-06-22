@@ -1,9 +1,9 @@
 namespace Sadin.Common.CustomExceptions;
 
-public sealed class KsInvalidEmailAddressException : Exception
+public sealed class KsInvalidEmailAddressException : KsException
 {
-    public KsInvalidEmailAddressException()
-        : base("Invalid email address")
+    public KsInvalidEmailAddressException(string? message = null)
+        : base(message ?? "Invalid email address")
     {
         
     }

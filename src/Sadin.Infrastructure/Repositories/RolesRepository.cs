@@ -26,4 +26,12 @@ public class RolesRepository : Repository<Role>, IRolesRepository
             .FirstOrDefaultAsync(r => r.Id == id,
                 cancellationToken);
     }
+
+    public async Task<List<Role>> GetRolesByIdsAsync(IEnumerable<Guid> ids,
+        CancellationToken cancellationToken = default)
+    {
+        return await Entity
+            .Where(r => ids.Contains(r.Id))
+            .ToListAsync(cancellationToken);
+    }
 }

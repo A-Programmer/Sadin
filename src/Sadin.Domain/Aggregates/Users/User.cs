@@ -45,9 +45,13 @@ public sealed class User : AggregateRoot
     private List<Role> _roles = new();
     public IReadOnlyCollection<Role> Roles => _roles;
 
-    public void Update(string email,
+    public void Update(string userName,
+        string email,
         string phoneNumber)
     {
+        if (userName.HasValue())
+            UserName = userName;
+        
         if (email.HasValue())
             Email = email;
         
@@ -73,6 +77,8 @@ public sealed class User : AggregateRoot
 
     public void UnAssignRoles(IEnumerable<Role> roles) =>
         _roles.RemoveAll(role => _roles.Contains(role));
+
+    public void ClearRoles() => _roles.Clear();
     
     public static User Create(Guid id,
         string userName,
