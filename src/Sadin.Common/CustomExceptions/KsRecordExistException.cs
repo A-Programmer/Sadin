@@ -1,14 +1,9 @@
 namespace Sadin.Common.CustomExceptions;
 
-public sealed class KsRecordExistException : Exception
+public sealed class KsRecordExistException : KsException
 {
-    private const string DefaultMessage = "The record exist";
-
     public KsRecordExistException(string? message = null)
-        : base(
-            string.IsNullOrEmpty(message)
-            ? DefaultMessage
-            : message)
+        : base(message ?? "Same record is exist.")
     {
     }
 }

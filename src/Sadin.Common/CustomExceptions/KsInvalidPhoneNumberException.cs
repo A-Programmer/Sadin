@@ -1,9 +1,9 @@
 namespace Sadin.Common.CustomExceptions;
 
-public sealed class KsInvalidPhoneNumberException : Exception
+public sealed class KsInvalidPhoneNumberException : KsException
 {
-    public KsInvalidPhoneNumberException()
-        : base("Invalid phone number")
+    public KsInvalidPhoneNumberException(string? message = null)
+        : base(message ?? "Invalid phone number")
     {
         
     }

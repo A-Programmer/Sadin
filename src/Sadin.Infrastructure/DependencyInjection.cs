@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sadin.Infrastructure.Migrations;
+using Sadin.Infrastructure.ExtensionMethods;
 
 namespace Sadin.Infrastructure;
 
