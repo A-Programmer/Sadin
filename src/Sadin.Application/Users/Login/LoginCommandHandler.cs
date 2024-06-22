@@ -19,7 +19,7 @@ public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginRes
     public async Task<LoginResponse> Handle(LoginCommand request,
         CancellationToken cancellationToken)
     {
-        User? user = await _uow.Users.FindUserByUserName(request.UserName,
+        User? user = await _uow.Users.FindUserByUserNameAsync(request.UserName,
             cancellationToken);
         if (user is null)
             throw new KsNotFoundException(request.UserName);

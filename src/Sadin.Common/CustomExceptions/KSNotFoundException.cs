@@ -1,9 +1,9 @@
 namespace Sadin.Common.CustomExceptions;
 
-public class KsNotFoundException : Exception
+public sealed class KsNotFoundException : KsException
 {
-    public KsNotFoundException(string name)
-        : base($"The entity, {name} could not be found.")
+    public KsNotFoundException(string? message = null)
+        : base(message ?? $"The entity could not be found.")
     {
         
     }

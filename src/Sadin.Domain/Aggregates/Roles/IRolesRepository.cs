@@ -9,4 +9,7 @@ public interface IRolesRepository : IRepository<Role>
 
     Task<Role?> GetRoleByIdIncludingUsersAsync(Guid id,
         CancellationToken cancellationToken = default);
+
+    Task<List<Role>> GetRolesByIdsAsync(IEnumerable<Guid> ids,
+        CancellationToken cancellationToken = default);
 }
