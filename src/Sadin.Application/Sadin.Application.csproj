@@ -11,4 +11,8 @@
     <ProjectReference Include="..\Sadin.Domain\Sadin.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\CreateUser\EventHandlers\" />
+  </ItemGroup>
+
 </Project>

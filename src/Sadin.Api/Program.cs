@@ -9,11 +9,10 @@ using Sadin.Presentation;
 var mainBuilder = WebApplication.CreateBuilder(args);
 
 (WebApplicationBuilder builder,
-    IConfiguration Configuration,
-    PublicSettings _settings) = mainBuilder.AddBasicConfigurations();
+    PublicSettings settings) = mainBuilder.AddBasicConfigurations();
 
 builder.RegisterApi(builder.Configuration);
-builder.Services.RegisterPresentation(_settings);
+builder.Services.RegisterPresentation(settings);
 builder.Services.RegisterInfrastructure(builder.Configuration);
 builder.Services.RegisterApplication();
 builder.Services.RegisterDomain();

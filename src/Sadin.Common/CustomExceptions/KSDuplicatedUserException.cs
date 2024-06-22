@@ -1,9 +1,9 @@
 namespace Sadin.Common.CustomExceptions;
 
-public class KsDuplicatedUserException: Exception
+public sealed class KsDuplicatedUserException: KsException
 {
-    public KsDuplicatedUserException(string userNam)
-        : base($"{userNam} is exist.")
+    public KsDuplicatedUserException(string message)
+        : base(message)
     {
     }
 }

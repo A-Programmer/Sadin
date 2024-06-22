@@ -1,8 +1,8 @@
-namespace Sadin.Application.Users.Register;
+namespace Sadin.Application.Users.CreateUser;
 
-public sealed class RegisterCommandValidator : AbstractValidator<RegisterCommand>
+public sealed class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public RegisterCommandValidator()
+    public CreateUserCommandValidator()
     {
         RuleFor(u => u.UserName)
             .NotEmpty()
@@ -23,5 +23,10 @@ public sealed class RegisterCommandValidator : AbstractValidator<RegisterCommand
             .NotNull()
             .Length(6,32)
             .Equal(u => u.ConfirmPassword);
+
+        RuleFor(u => u.Roles)
+            .NotEmpty()
+            .NotNull()
+            .Must(x => x.Length > 0);
     }
 }

@@ -3,7 +3,7 @@ using FluentValidation.Results;
 
 namespace Sadin.Common.CustomExceptions;
 
-public class KsValidationException: Exception
+public sealed class KsValidationException: KsException
 {
     public IEnumerable<ValidationFailure> Errors { get; }
 
