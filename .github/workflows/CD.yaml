@@ -1,0 +1,51 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Publish
+      run: dotnet publish --no-build --configuration Release --output ./publish
+
+    - name: Generate SSH key
+      run: |
+        ssh-keygen -t rsa -b 4096 -f /tmp/deploy_key -N ""
+        echo "::set-output name=ssh-private-key::$(cat /tmp/deploy_key)"
+        echo "::set-output name=ssh-public-key::$(cat /tmp/deploy_key.pub)"
+
+    - name: Add SSH key to GitHub Secrets
+      env:
+        SSH_PRIVATE_KEY: ${{ steps.generate_ssh_key.outputs.ssh-private-key }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Deploy to VPS
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      run: |
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H your_vps_ip >> ~/.ssh/known_hosts
+        rsync -avz -e "ssh -i ~/.ssh/id_rsa" ./publish/ root@85.198.13.75:/var/www/api.sadin.dev
