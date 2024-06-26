@@ -11,7 +11,7 @@ public static class DependencyInjection
         builder.Services.Configure<PublicSettings>(
             configuration.GetSection(nameof(PublicSettings)));
         
-        builder.AddSerilog();
+        // builder.AddSerilog();
         
         return builder;
     }
