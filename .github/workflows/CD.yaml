@@ -34,7 +34,7 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
 
     - name: Add VPS to known hosts
-      run: ssh-keyscan -H your_vps_ip >> ~/.ssh/known_hosts
+      run: ssh-keyscan -H 85.198.13.75 >> ~/.ssh/known_hosts
 
     - name: Deploy to VPS
       run: |
