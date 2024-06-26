@@ -2,7 +2,7 @@ name: dotnet-build
 on: push
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out repo code
         uses: actions/checkout@v3
