@@ -1,40 +1,24 @@
-name: CI for .NET 8 Application
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
+name: dotnet-build
+on: push
 jobs:
   build:
-    runs-on: self-hosted
-
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '8.0.x'
-
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-
-    - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal
-
-    - name: Publish
-      run: dotnet publish --configuration Release --output publish --no-build
-
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: published-app
-        path: publish
+      - name: Check out repo code
+        uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2 with:
+      dotnet-version: '8.0.x'
+      - name: Restore
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Test
+        run: dotnet test --no-build
+      - name: Publish
+        run: dotnet publish -c Release -o ./publish
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dotnet-app
+          path: ./publish
