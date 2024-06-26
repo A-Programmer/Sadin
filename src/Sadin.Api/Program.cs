@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Sadin.Api;
 using Sadin.Api.ExtensionMethods;
 using Sadin.Application;
@@ -19,6 +20,11 @@ builder.Services.RegisterDomain();
 builder.Services.RegisterCommon();
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 app.UsePresentation();
 app.UseCommon();
