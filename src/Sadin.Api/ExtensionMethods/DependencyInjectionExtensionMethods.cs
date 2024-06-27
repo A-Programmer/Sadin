@@ -30,7 +30,7 @@ public static class DependencyInjectionExtensionMethods
     public static WebApplication RegisterGeneralPipelines(this WebApplication app)
     {   
         
-        app.UseHttpsRedirection();
+        // app.UseHttpsRedirection();
         return app;
     }
 }
