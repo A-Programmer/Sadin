@@ -33,8 +33,12 @@ jobs:
       - name: Deploy to IIS
         run: |
           $destination = "\\\\185.165.119.63\\c$\\sites\\sadin.dev\\api"
-          New-PSDrive -Name S -PSProvider FileSystem -Root $destination -Credential (Get-Credential)
+          $securePassword = ConvertTo-SecureString $env:SERVER_PASSWORD -AsPlainText -Force
+          $credential = New-Object System.Management.Automation.PSCredential ($env:SERVER_USERNAME, $securePassword)
+          New-PSDrive -Name S -PSProvider FileSystem -Root $destination -Credential $credential
           Copy-Item -Path ./publish/* -Destination S:\ -Recurse -Force
           Remove-PSDrive -Name S
-        env:
+          env:
           DOTNET_ROOT: ${{ runner.tool_cache }}/dncs
+          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
