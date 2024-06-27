@@ -1,42 +1,40 @@
-name: CD
+name: Deploy WebAPI
 
 on:
   push:
     branches:
-      - main
+      - main  # or the branch you want to trigger the workflow
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 8.0.x
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x' # Specify the version of .NET Core
 
-    - name: Restore dependencies
-      run: dotnet restore
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
 
-    - name: Publish
-      run: dotnet publish --no-build --configuration Release --output ./publish
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
 
-    - name: Setup SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H 85.198.13.75 >> ~/.ssh/known_hosts
+      - name: Publish
+        run: dotnet publish -c Release -o ./publish
 
-    - name: Test SSH connection
-      run: ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@85.198.13.75 "echo 'SSH connection successful'"
-
-    - name: Deploy to VPS
-      run: |
-        rsync -avz -e "ssh -i ~/.ssh/id_rsa" ./publish/ root@85.198.13.75:/var/www/api.sadin.dev
+      - name: Deploy to IIS
+        run: |
+          $destination = "\\\\185.165.119.63\\c$\\sites\\sadin.dev\\api"
+          New-PSDrive -Name S -PSProvider FileSystem -Root $destination -Credential (Get-Credential)
+          Copy-Item -Path ./publish/* -Destination S:\ -Recurse -Force
+          Remove-PSDrive -Name S
+        env:
+          DOTNET_ROOT: ${{ runner.tool_cache }}/dncs
