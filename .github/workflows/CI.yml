@@ -1,9 +1,8 @@
-name: My .NET Action
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [ main ]
-
 jobs:
   build:
     runs-on: self-hosted
@@ -11,9 +10,8 @@ jobs:
     defaults:
       run:
         shell: cmd
-
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -25,4 +23,4 @@ jobs:
     - name: Publish Release
       run: dotnet publish --configuration Release -o C:\sites\sadin-dev\api
     - name: Start api-sadin-dev
-      run: appcmd start sites "example.com"
+      run: appcmd start sites "api-sadin-dev"
