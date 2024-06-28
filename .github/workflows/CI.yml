@@ -1,4 +1,4 @@
-name: Deploy API Server
+name: Deploy Blazor Server
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -28,70 +28,17 @@ jobs:
         run: dotnet test --no-restore --verbosity normal
 
       - name: Publish
-        run: dotnet publish --configuration Release -o C:\sites\sadin-dev\api
-      - name: Start api-sadin-dev
-        run: appcmd start sites "api-sadin-dev"
+        run: dotnet publish -c Release -o ./publish
 
-
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-
-# jobs:
-#   build:    
-#     runs-on: [self-hosted]
-#     steps:
-#     - uses: actions/checkout@v1
-#     - name: Set up .NET Core
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: '8.0.x'
-#     - name: Build with dotnet
-#       run: dotnet build --configuration Release
-
-#   test:
-#     needs: build
-#     runs-on: [self-hosted]
-
-#     steps:
-#     - name: Test
-#       run: dotnet test
-
-#   deploy:
-#     needs: test
-#     runs-on: [self-hosted]
-    
-#     steps:
-#     - name: Project publish
-#       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/api-sadin-dev
-
-    # - name: Deploy to IIS
-    #   run: |
-    #     if ((Get-WebSiteState -Name api-sadin-dev).Value -eq "Started")
-    #     {
-    #         Stop-WebSite -Name api-sadin-dev
-    #         echo "Stopped Website api-sadin-dev"
-    #     }
-    #     if ((Get-WebAppPoolState -Name api-sadin-dev).Value -eq "Started")
-    #     {
-    #         Stop-WebAppPool -Name api-sadin-dev
-    #         echo "Stopped Application Pool api-sadin-dev"
-    #     }
-        
-    #     Start-Sleep -s 15        
-    #     Copy-Item ${{env.DOTNET_ROOT}}/api-sadin-dev/* ${{ secrets.API_DEPLOYMENT_PATH }} -Recurse -Force
-        
-    #     if ((Get-WebSiteState -Name api-sadin-dev).Value -eq "Stopped")
-    #     {
-    #         Start-WebSite -Name api-sadin-dev
-    #         echo "Started Website api-sadin-dev"
-    #     }
-    #     if ((Get-WebAppPoolState -Name api-sadin-dev).Value -eq "Stopped")
-    #     {
-    #         Start-WebAppPool -Name api-sadin-dev
-    #         echo "Started Application Pool api-sadin-dev"
-    #     }
-        
-    #     if ($lastexitcode -lt 8) { $global:lastexitcode = 0 }
+      - name: Deploy to IIS
+        run: |
+          $destination = "\\\\185.165.119.63\\c$\\sites\\sadin.dev\\api"
+          $securePassword = ConvertTo-SecureString ${{ secrets.SERVER_PASSWORD }} -AsPlainText -Force
+          $credential = New-Object System.Management.Automation.PSCredential (${{ secrets.SERVER_USERNAMED }}, $securePassword)
+          New-PSDrive -Name S -PSProvider FileSystem -Root $destination -Credential $credential
+          Copy-Item -Path ./publish/* -Destination S:\ -Recurse -Force
+          Remove-PSDrive -Name S
+        env:
+          DOTNET_ROOT: ${{ runner.tool_cache }}/dncs
+          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
