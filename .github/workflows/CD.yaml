@@ -1,44 +1,34 @@
-name: Deploy WebAPI
+name: Build, publish and deploy project to Simply
 
-on:
-  push:
-    branches:
-      - main  # or the branch you want to trigger the workflow
+on: [push]
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: windows-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v1
 
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '8.0.x' # Specify the version of .NET Core
+          dotnet-version: 8.0.x
 
-      - name: Restore dependencies
+      - name: Install dependencies
         run: dotnet restore
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
-
       - name: Publish
-        run: dotnet publish -c Release -o ./publish
+        run: dotnet publish --configuration Release --output ./publish --runtime win-x86
+
+      - name: Test with .NET
+        run: dotnet test
 
       - name: Deploy to IIS
-        run: |
-          $destination = "\\\\185.165.119.63\\c$\\sites\\sadin.dev\\api"
-          $securePassword = ConvertTo-SecureString ${{ secrets.SERVER_PASSWORD }} -AsPlainText -Force
-          $credential = New-Object System.Management.Automation.PSCredential (${{ secrets.SERVER_USERNAMED }}, $securePassword)
-          New-PSDrive -Name S -PSProvider FileSystem -Root $destination -Credential $credential
-          Copy-Item -Path ./publish/* -Destination S:\ -Recurse -Force
-          Remove-PSDrive -Name S
-        env:
-            DOTNET_ROOT: ${{ runner.tool_cache }}/dncs
-            SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-            SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        uses: rasmusbuchholdt/simply-web-deploy@2.1.0
+        with:
+          website-name: ${{ secrets.WEBSITE_NAME }}
+          server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
+          server-username: ${{ secrets.SERVER_USERNAME }}
+          server-password: ${{ secrets.SERVER_PASSWORD }}
