@@ -35,8 +35,57 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Debug SSH Connection
+        run: ssh -o StrictHostKeyChecking=no cicd@185.165.119.63 'echo "SSH connection successful"'
+
       - name: Transfer files via SCP
-        run: scp -r D:/a/Sadin/Sadin/publish/* cicd@185.165.119.63:/c/sites/sadin.dev/api
+        run: scp -o StrictHostKeyChecking=no -r ./publish/* cicd@185.165.119.63:/c/sites/sadin.dev/api
 
       - name: Restart IIS
-        run: ssh cicd@185.165.119.63 'powershell.exe -command "Restart-WebAppPool -Name api-sadin-dev"'
+        run: ssh -o StrictHostKeyChecking=no cicd@185.165.119.63 'powershell.exe -command "Restart-WebAppPool -Name api-sadin-dev"'
+
+
+
+
+# name: Deploy WebAPI
+
+# on:
+#   push:
+#     branches:
+#       - main  # or the branch you want to trigger the workflow
+
+# jobs:
+#   build:
+#     runs-on: windows-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Setup .NET Core
+#         uses: actions/setup-dotnet@v3
+#         with:
+#           dotnet-version: '8.0.x' # Specify the version of .NET Core
+
+#       - name: Restore dependencies
+#         run: dotnet restore
+
+#       - name: Build
+#         run: dotnet build --configuration Release --no-restore
+
+#       - name: Test
+#         run: dotnet test --no-restore --verbosity normal
+
+#       - name: Publish
+#         run: dotnet publish -c Release -o ./publish
+
+#       - name: Add SSH key
+#         uses: webfactory/ssh-agent@v0.5.3
+#         with:
+#           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+#       - name: Transfer files via SCP
+#         run: scp -r D:/a/Sadin/Sadin/publish/* cicd@185.165.119.63:/c/sites/sadin.dev/api
+
+#       - name: Restart IIS
+#         run: ssh cicd@185.165.119.63 'powershell.exe -command "Restart-WebAppPool -Name api-sadin-dev"'
