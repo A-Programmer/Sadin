@@ -30,14 +30,13 @@ jobs:
       - name: Publish
         run: dotnet publish -c Release -o ./publish
 
-      - name: Deploy to IIS
-        env:
-          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
-        run: |
-          $destination = "\\\\185.165.119.63\\c$\\sites\\sadin.dev\\api"
-          $securePassword = ConvertTo-SecureString $env:SERVER_PASSWORD -AsPlainText -Force
-          $credential = New-Object System.Management.Automation.PSCredential ($env:SERVER_USERNAME, $securePassword)
-          New-PSDrive -Name S -PSProvider FileSystem -Root $destination -Credential $credential
-          Copy-Item -Path ./publish/* -Destination S:\ -Recurse -Force
-          Remove-PSDrive -Name S
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Transfer files via SCP
+        run: scp -r ./publish/* cicd@185.165.119.63:/c/sites/sadin.dev/api
+
+      - name: Restart IIS
+        run: ssh your_username@your_vps_ip 'powershell.exe -command "Restart-WebAppPool -Name api-sadin-dev"'
