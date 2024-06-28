@@ -36,7 +36,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Transfer files via SCP
-        run: scp -r ./publish/* cicd@185.165.119.63:/c/sites/sadin.dev/api
+        run: scp -r D:/a/Sadin/Sadin/publish/* cicd@185.165.119.63:/c/sites/sadin.dev/api
 
       - name: Restart IIS
         run: ssh your_username@your_vps_ip 'powershell.exe -command "Restart-WebAppPool -Name api-sadin-dev"'
