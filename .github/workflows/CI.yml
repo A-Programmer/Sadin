@@ -1,34 +1,28 @@
-name: CI
+name: My .NET Action
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: self-hosted
+    
+    defaults:
+      run:
+        shell: cmd
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 8.0.x
-
+    - uses: actions/checkout@v3
     - name: Restore dependencies
       run: dotnet restore
-
     - name: Build
-      run: dotnet build --no-restore --configuration Release
-
+      run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-
-    - name: Publish
-      run: dotnet publish --no-build --configuration Release --output ./publish
+    - name: Stop example.com
+      run: appcmd stop sites "api-sadin-dev"
+    - name: Publish Release
+      run: dotnet publish --configuration Release -o C:\sites\sadin-dev\api
+    - name: Start api-sadin-dev
+      run: appcmd start sites "example.com"
