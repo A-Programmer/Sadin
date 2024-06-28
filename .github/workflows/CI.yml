@@ -1,33 +1,36 @@
-name: CI/CD Pipeline
+name: Deploy API Server
 
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main  # or the branch you want to trigger the workflow
 
 jobs:
   build:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core SDK 6.0.x
-      uses: actions/setup-dotnet@v1.7.2
-      with:
-        dotnet-version: '8.0.x'
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Stop api-sadin-dev
-      run: appcmd stop sites "api-sadin-dev"
-    - name: Publish Release
-      run: dotnet publish --configuration Release -o C:\sites\sadin-dev\api
-    - name: Start api-sadin-dev
-      run: appcmd start sites "api-sadin-dev"
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x' # Specify the version of .NET Core
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: Publish
+        run: dotnet publish --configuration Release -o C:\sites\sadin-dev\api
+      - name: Start api-sadin-dev
+        run: appcmd start sites "api-sadin-dev"
 
 
 # on:
