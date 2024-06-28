@@ -45,8 +45,6 @@ jobs:
         run: ssh -o StrictHostKeyChecking=no cicd@185.165.119.63 'powershell.exe -command "Restart-WebAppPool -Name api-sadin-dev"'
 
 
-
-
 # name: Deploy WebAPI
 
 # on:
